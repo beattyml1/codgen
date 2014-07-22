@@ -84,22 +84,22 @@ class Template
 
 
   def get_fill_single_field(name, value, current_filled_template)
-  	current_filled_template.replace('{{'+name+'}}', value)
+    current_filled_template.replace('{{'+name+'}}', value)
   end
 
 
   def get_fill_single_switch(name, value, current_filled_template)
-  	regex = Regexp.new('^*##:'+name+'\?*$') # Should match lines ending with ##:name?
-  	matches = current_filled_template.scan(''\\? '+name')
+    regex = Regexp.new('^*##:'+name+'\?*$') # Should match lines ending with ##:name?
+    matches = current_filled_template.scan(''\\? '+name')
 
     if value
-	  matches.each do |match|
-	    current_filled_template.gsub(match, match.gsub('##:name?'))
-	  end
-	else
-		matches.each_char do |match|
-		  match.gsub(match)
-		end
+    matches.each do |match|
+      current_filled_template.gsub(match, match.gsub('##:name?'))
+    end
+  else
+    matches.each_char do |match|
+      match.gsub(match)
+    end
     end
   end
 
