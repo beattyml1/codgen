@@ -7,8 +7,9 @@ class Template
   def initialze(parent, name)
     @parent = parent
     @name = name
-    @remaining_text = ""
+    @remaining_text = ''
     @templates = []
+    @text = ''
   end
 
 
@@ -22,16 +23,18 @@ class Template
 
       @remaining_text = @remaining_text[template_tag_start_index+3...@remaining_text.length]
 
-      tag_type = get_next_word(@remaining_text)
+      tag_type = get_next_word()
 
-      template_name = get_next_word(@remaining_text)
+      template_name = get_next_word()
 
-      template_tag_end_index = @remaining_text.index('<<<')
+      template_tag_end_index = @remaining_text.index('>>>')
+
+      @remaining_text = @remaining_text[template_tag_end_index+3, @remaining_text.length-3-template_tag_end_index]
 
       if tag_type == 'start'
         template = Template.new(this, template_name)
         @templates.push(template)
-        @text += "{{"+template_name+"}}"
+        @text += '{{'+template_name+'}}'
         template.parse(@remaining_text)
       elsif tag_type == 'end'
         if template_name == @name
@@ -50,20 +53,22 @@ class Template
     current_level = current_object_chain[0]
 
     if current_level.is_a?(Array)
-      current_level.each_with_index do |instance, index|
+      current_level.each do |instance|
         output += get_fill_single(instance, current_object_chain)
       end
     elsif current_level.is_a?(Hash)
       output = get_fill_single(current_level, current_object_chain)
     else
-      throw "Invalid input type to function fill. Must be either an Arrray or a Hash"
+      throw 'Invalid input type to function fill. Must be either an Array or a Hash'
     end
 
-    return output 
+    output
   end
 
 
   def get_fill_single(current_level, levels)
+    current_filled_template = @text
+
     @templates.each do |template|
       next_level = current_level[template.name]
       next_levels = Array.new(levels)
@@ -79,7 +84,7 @@ class Template
       end
     end
 
-    return current_filled_template
+    current_filled_template
   end
 
 
@@ -90,7 +95,7 @@ class Template
 
   def get_fill_single_switch(name, value, current_filled_template)
     regex = Regexp.new('^*##:'+name+'\?*$') # Should match lines ending with ##:name?
-    matches = current_filled_template.scan(''\\? '+name')
+    matches = current_filled_template.scan(regex)
 
     if value
     matches.each do |match|
@@ -104,17 +109,17 @@ class Template
   end
 
 
-  def get_next_word()
+  def get_next_word
     @remaining_text.lstrip
 
-    id = ""
+    id = ''
     while is_id_char(@remaining_text[0])
       id += @remaining_text[0]
 
       if @remaining_text.length > 1
         @remaining_text = @remaining_text[1...@remaining_text.length]
       else 
-        throw "Expected end of tag or next word"
+        throw 'Expected end of tag or next word'
       end
     end
 
@@ -153,7 +158,7 @@ def main(args)
   json_data = get_file_contents(args.json_data_filename)
   template_text = get_file_contents(args.template_filename)
   json_object_chain = [ JSON.parse(json_data) ]
-  root_template = Template.new(nil, "root")
+  root_template = Template.new(nil, 'root')
   root_template.parse(template_text)
   output = root_template.fill(json_object_chain)
   write_file_contents(args.output_filename, output)
