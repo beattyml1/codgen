@@ -5,7 +5,7 @@ A Cross Language, Template+JSON Code Generator
 
 Released under GNU GPL v3.
 
-It works but there's not a lot of error handling yet and a bunch of shortcuts. Use at your own risk.
+It works but there's not a lot of error handling yet and a bunch of shortcuts. Use at your own risk. Run as follows:
 
 > ruby codgen.rb ExampleData.json ExampleTemplate.cs Output.cs
 
