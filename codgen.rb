@@ -4,11 +4,11 @@ require 'json'
 
 # This is not a thread safe object!
 class Template
-  def initialze(parent, name)
+  def initialize(parent, name)
     @parent = parent
     @name = name
     @remaining_text = ''
-    @templates = []
+    @templates = Hash.new
     @text = ''
   end
 
@@ -16,10 +16,20 @@ class Template
   def parse(remaining_text)
     @remaining_text = remaining_text
 
+    if @remaining_text.length == 0
+      return ''
+    end
+
     loop do 
       template_tag_start_index = @remaining_text.index('<<<')
-      before_text = [0..template_tag_start_index]
-      @text += before_text  
+
+      if template_tag_start_index == nil
+        @text += @remaining_text
+        return ''
+      end
+
+      before_text = @remaining_text[0...template_tag_start_index]
+      @text += before_text
 
       @remaining_text = @remaining_text[template_tag_start_index+3...@remaining_text.length]
 
@@ -32,13 +42,13 @@ class Template
       @remaining_text = @remaining_text[template_tag_end_index+3, @remaining_text.length-3-template_tag_end_index]
 
       if tag_type == 'start'
-        template = Template.new(this, template_name)
-        @templates.push(template)
+        template = Template.new(self, template_name)
+        @templates.store(template_name, template)
         @text += '{{'+template_name+'}}'
-        template.parse(@remaining_text)
+        @remaining_text = template.parse(@remaining_text)
       elsif tag_type == 'end'
         if template_name == @name
-          return
+          return @remaining_text
         else
           throw "Template close tag '"+template_name+"' does not match template start tag '"+@name+"'"
         end
@@ -49,38 +59,43 @@ class Template
   end
 
 
-  def fill(current_object_chain) # input can be either an object or an array
-    current_level = current_object_chain[0]
+  def get_fill_template_list(template_name, template_array, levels)
+    template_list_output = ''
 
-    if current_level.is_a?(Array)
-      current_level.each do |instance|
-        output += get_fill_single(instance, current_object_chain)
-      end
-    elsif current_level.is_a?(Hash)
-      output = get_fill_single(current_level, current_object_chain)
-    else
-      throw 'Invalid input type to function fill. Must be either an Array or a Hash'
+    template_array.each do |template_data|
+      template = @templates[template_name]
+      next_level = template_data
+      next_levels = Array.new(levels).insert(0, next_level)
+
+      template_list_output += template.fill(next_levels)
     end
 
-    output
+    template_list_output
   end
 
 
-  def get_fill_single(current_level, levels)
+
+  def fill(levels)
     current_filled_template = @text
 
-    @templates.each do |template|
-      next_level = current_level[template.name]
-      next_levels = Array.new(levels)
-      next_levels.insert(0, next_level)
-
-      current_filled_template = get_fill_single_field(template.name, template.fill(next_levels), current_filled_template)
+    levels[0].each do |key, value|
+      if value.is_a?(Array)
+        filled_templates = get_fill_template_list(key, value, levels)
+        current_filled_template = get_fill_single_field(key, filled_templates , current_filled_template)
+      end
     end
 
     levels.each do |level|
+      if level.is_a?(Array)
+        next
+      end
+
       level.each do |key, value|
-        current_filled_template = get_fill_single_field(key, value, current_filled_template)
-        current_filled_template = get_fill_single_switch(key, value, current_filled_template)
+        if value.is_a?(String)
+          current_filled_template = get_fill_single_field(key, value, current_filled_template)
+        elsif !!value == value
+          current_filled_template = get_fill_single_switch(key, value, current_filled_template)
+        end
       end
     end
 
@@ -88,32 +103,46 @@ class Template
   end
 
 
+  def name
+    @name
+  end
+
   def get_fill_single_field(name, value, current_filled_template)
-    current_filled_template.replace('{{'+name+'}}', value)
+    current_filled_template.gsub('{{'+name+'}}', value)
   end
 
 
   def get_fill_single_switch(name, value, current_filled_template)
-    regex = Regexp.new('^*##:'+name+'\?*$') # Should match lines ending with ##:name?
+    regex = Regexp.new('^.*##:'+name+'\?.*$') # Should match lines ending with ##:name?
     matches = current_filled_template.scan(regex)
 
     if value
-    matches.each do |match|
-      current_filled_template.gsub(match, match.gsub('##:name?'))
+      matches.each do |match|
+        inserted_line = match.sub('##:'+name+'?', '')
+        current_filled_template.sub!(match, inserted_line)
+      end
+    else
+      matches.each do |match|
+        line_start = current_filled_template.index(match)
+        current_filled_template.gsub!(match, '')
+        current_filled_template = current_filled_template[0...line_start-1] + current_filled_template[line_start...current_filled_template.length]
+      end
     end
-  else
-    matches.each_char do |match|
-      match.gsub(match)
-    end
-    end
+    current_filled_template
   end
 
 
   def get_next_word
-    @remaining_text.lstrip
+    @remaining_text = @remaining_text.lstrip
 
     id = ''
-    while is_id_char(@remaining_text[0])
+    loop do
+      continue = is_id_char(@remaining_text[0])
+
+      if !continue
+        break;
+      end
+
       id += @remaining_text[0]
 
       if @remaining_text.length > 1
@@ -123,14 +152,15 @@ class Template
       end
     end
 
-    @remaining_text.rstrip
+    @remaining_text = @remaining_text.rstrip
 
     return id
   end
 
 
   def is_id_char(input_string)
-    return (/^[a-zA-Z0-9_]$/.match(input_string))
+    first_match = input_string.index(/[a-zA-Z0-9_:]/)
+    first_match == 0
   end
 end
 

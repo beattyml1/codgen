@@ -1,4 +1,4 @@
-<<< start root >>>
+
 using System;
 
 // To insert a value from JSON just use double curly brackets with the name inside
@@ -17,10 +17,9 @@ namespace {{applicationName:CapCamel:Single}}.Models
 		}
 
 		<<< start fields >>>
-		// Note that it will look for the value prioritizing deepest applicable level first ie
-		// It will look first in the fields element level and then at the root level
-		[Required] ##:required? // Switches: Includes line if required is true
-		[MaxLength({{maxLength}})] ##:maxLength? // This is eventual syntax right now you'd have to use a seperate HasMaxLength property for the switch
+		[Required] ##:required?
+		[ReadOnly] ##:readOnly?
+		[MaxLength({{maxLength}})] ##:hasMaxLength?
 		public {{cstype}} {{fieldName:CapCamel:Single}}
 		{
 			get { return _dataStore.{{fieldName:CapCamel:Single}} }
@@ -32,8 +31,7 @@ namespace {{applicationName:CapCamel:Single}}.Models
 		}
 
 		public static ModelFieldInfo {{fieldName:CapCamel}}FieldInfo;
-		##::last?
+		
 		<<< end fields >>>
 	}
 }
-<<< end root >>>

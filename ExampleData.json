@@ -1,0 +1,20 @@
+{
+	"applicationName:CapCamel:Single": "TestApp",
+	"entityName:CapCamel:Single": "TestModel",
+	"fields": [{
+			"fieldName:CapCamel:Single": "TestModelId",
+			"cstype": "Guid",
+			"readOnly": true,
+			"required": false,
+			"hasMaxLength": false
+
+		}, {
+			"fieldName:CapCamel:Single": "TestModelName",
+			"cstype": "string",
+			"readOnly": false,
+			"required": true,
+			"hasMaxLength": true,
+			"maxLength": "5"
+		}
+	]
+}
