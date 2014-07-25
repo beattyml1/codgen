@@ -2,12 +2,12 @@
     "caseTo": "lower",
     "type": {
         "cstype": {
-            "bigint": "long",
-            "varchar\\([0-9]*\\)": "string",
-            "nvarchar(\\([0-9]*\\))": "string",
-            "text": "string",
-            "smallint": "short",
-            "uniqueidentifier": "Guid"
+            "(?i)bigint": "long",
+            "(?i)varchar\\([0-9]*\\)": "string",
+            "(?i)nvarchar(\\([0-9]*\\))": "string",
+            "(?i)text": "string",
+            "(?i)smallint": "short",
+            "(?i)uniqueidentifier": "Guid"
         }
     }
 }
