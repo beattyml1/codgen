@@ -165,7 +165,131 @@ class Template
 end
 
 
-def get_args()
+module Mapping
+  def self.map_object(json_data, json_map_data)
+    if json_data != nil && json_data.is_a?(Array)
+      json_data.each do |item|
+        map_object(item, json_map_data)
+      end
+      return
+    end
+
+    add_entries = Hash.new
+    json_data.each do |key, value|
+      if value != nil && value.is_a?(Array) || value.is_a?(Hash)
+        map_object(value, json_map_data)
+        next
+      end
+
+      map = json_map_data[key]
+      if map != nil
+        map.each do |output_key, value_map|
+          if !json_data.has_key?(output_key)
+            output_value = value
+            value_map.each do |match_expr, map_value|
+              if Regexp.new(match_expr).match(value)
+                output_value = map_value
+                break
+              end
+            end
+            add_entries.store(output_key, output_value)
+          end
+        end
+      end
+    end
+
+    add_entries.each do |key, value|
+      json_data.store(key, value)
+    end
+  end
+end
+
+
+module AutoStyle
+  public
+    def self.style_casing(json_object)
+      if json_object.is_a?(Array)
+        json_object.each { |child| style_casing(child) }
+      end
+
+      add_props = Hash.new
+      if json_object.is_a?(Hash)
+        json_object.each do |key, value|
+          if value.is_a?(Hash) || value.is_a?(Array)
+            style_casing(value)
+            next
+          end
+
+          if key.index(' ') || key.index('%')
+            add_props.store(key, value)
+          end
+        end
+      end
+
+      add_props.each do |key, value|
+        add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '%camelCase')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_cap_camel), '%CapCamel')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_underscore), '%underscored')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '%CAPS_UNDERSCORE')
+      end
+    end
+
+
+  private
+    def self.add_property_group(json_object, key, value, translate, explicit_postfix)
+      should_translate_val = value != nil && value.is_a?(String)
+
+      new_key = translate.call(key)
+      new_value = should_translate_val ? translate.call(value) : value
+
+      try_add_prop(json_object, new_key, new_value)
+      try_add_prop(json_object, new_key+explicit_postfix, new_value)
+    end
+
+
+    def self.try_add_prop(json_object, key, value)
+      if !json_object.has_key?(key)
+        json_object.store(key, value)
+      end
+    end
+
+
+    def self.to_universal(input_string)
+      output_string = input_string.tr('%', '')
+      output_string.split(' ')
+    end
+
+
+    def self.to_cap_camel(input_string)
+      universal = to_universal(input_string)
+      universal.each {|word| word[0] = word[0].upcase}
+      universal.join('')
+    end
+
+
+    def self.to_camel(input_string)
+      universal = to_universal(input_string)
+      universal[1...universal.count].each {|word| word[0] = word[0].upcase}
+      universal.join('')
+    end
+
+
+    def self.to_underscore(input_string)
+      universal = to_universal(input_string)
+      output = universal.join('_')
+      output.downcase
+    end
+
+
+    def self.to_allcaps_underscore(input_string)
+      universal = to_universal(input_string)
+      output = universal.join('_')
+      output.upcase
+    end
+end
+
+
+def get_args
   if ARGV.count < 3
     puts 'Invalid arguement count, arguments should be like: data.json template.cs ouput.json [optional-map.json]'
     exit 1
@@ -196,44 +320,6 @@ def write_file_contents(filepath, content)
 end
 
 
-def map_level(json_data, json_map_data)
-  if json_data != nil && json_data.is_a?(Array)
-    json_data.each do |item|
-      map_level(item, json_map_data)
-    end
-    return
-  end
-
-  add_entries = Hash.new
-  json_data.each do |key, value|
-    if value != nil && value.is_a?(Array) || value.is_a?(Hash)
-      map_level(value, json_map_data)
-      next
-    end
-
-    map = json_map_data[key]
-    if map != nil
-      map.each do |output_key, value_map|
-        if !json_data.has_key?(output_key)
-          output_value = value
-          value_map.each do |match_expr, map_value|
-            if Regexp.new(match_expr).match(value)
-              output_value = map_value
-              break
-            end
-          end
-          add_entries.store(output_key, output_value)
-        end
-      end
-    end
-  end
-
-  add_entries.each do |key, value|
-    json_data.store(key, value)
-  end
-end
-
-
 def main(args)
   json_data_text = get_file_contents(args.json_data_filename)
   template_text = get_file_contents(args.template_filename)
@@ -243,8 +329,10 @@ def main(args)
     json_map_text = get_file_contents(args.json_map_filename)
     json_map = JSON.parse(json_map_text)
 
-    map_level(json_data, json_map)
+    Mapping.map_object(json_data, json_map)
   end
+
+  AutoStyle.style_casing(json_data)
 
   json_object_chain = [ json_data ]
   root_template = Template.new(nil, 'root')

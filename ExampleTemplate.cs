@@ -1,32 +1,29 @@
-
 using System;
 
-// To insert a value from JSON just use double curly brackets with the name inside
-// Casing changing and pluralizing isn't currently supported automatically but putting in this format now should allow your templates to use it once we add that feature
-namespace {{applicationName:CapCamel:Single}}.Models
+namespace {{ApplicationName}}.Models
 {
-	public class {{entityName:CapCamel:Single}} : ModelBaseClass<T> where T: DataStoreBase, new()
+	public class {{EntityName%CapCamel}} : ModelBaseClass<{{EntityName}}DataStore> where T: DataStoreBase, new()
 	{
-		T _dataStore;
+		{{EntityName}}DataStore _dataStore;
 
-		public {{entityName:CapCamel:Single}} : this(new T()) { }
+		public {{EntityName}} : this(new {{EntityName}}DataStore()) { }
 
-		public {{entityName:CapCamel:Single}}(T dataStore)
+		public {{EntityName}}({{EntityName}}DataStore dataStore)
 		{
 			_dataStore = dataStore
 		}
 
 		<<< start fields >>>
 		[Required] ##:required?
-		[ReadOnly] ##:readOnly?
+		[ReadOnly] ##:ReadOnly?
 		[MaxLength({{maxLength}})] ##:hasMaxLength?
-		public {{cstype}} {{fieldName:CapCamel:Single}}
+		public {{cstype}} {{FieldName}}
 		{
-			get { return _dataStore.{{fieldName:CapCamel:Single}} }
+			get { return _dataStore.{{FieldName}} }
 			set
 			{
 				_dataStore.{{fieldName:CapCamel:Single}} = value;
-				NotifyPropertyChanged("{{fieldName:CapCamel:Single}}")
+				NotifyPropertyChanged("{{FieldName}}")
 			}
 		}
 

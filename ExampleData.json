@@ -1,19 +1,19 @@
 {
-	"applicationName:CapCamel:Single": "TestApp",
-	"entityName:CapCamel:Single": "TestModel",
+	"application name": "test app",
+	"entity name": "test model",
 	"fields": [
         {
-			"fieldName:CapCamel:Single": "TestModelId",
+			"field name": "test model id",
 			"type": "UniqueIdentifier",
-			"readOnly": true,
+			"readOnly%": true,
 			"required": false,
 			"hasMaxLength": false
 
 		},
         {
-			"fieldName:CapCamel:Single": "TestModelName",
+			"field name": "test model name",
 			"type": "varchar(5)",
-			"readOnly": false,
+			"readOnly%": false,
 			"required": true,
 			"hasMaxLength": true,
 			"maxLength": "5"

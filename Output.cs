@@ -1,17 +1,14 @@
-
 using System;
 
-// To insert a value from JSON just use double curly brackets with the name inside
-// Casing changing and pluralizing isn't currently supported automatically but putting in this format now should allow your templates to use it once we add that feature
 namespace TestApp.Models
 {
-	public class TestModel : ModelBaseClass<T> where T: DataStoreBase, new()
+	public class TestModel : ModelBaseClass<TestModelDataStore> where T: DataStoreBase, new()
 	{
-		T _dataStore;
+		TestModelDataStore _dataStore;
 
-		public TestModel : this(new T()) { }
+		public TestModel : this(new TestModelDataStore()) { }
 
-		public TestModel(T dataStore)
+		public TestModel(TestModelDataStore dataStore)
 		{
 			_dataStore = dataStore
 		}
@@ -23,7 +20,7 @@ namespace TestApp.Models
 			get { return _dataStore.TestModelId }
 			set
 			{
-				_dataStore.TestModelId = value;
+				_dataStore.{{fieldName:CapCamel:Single}} = value;
 				NotifyPropertyChanged("TestModelId")
 			}
 		}
@@ -38,7 +35,7 @@ namespace TestApp.Models
 			get { return _dataStore.TestModelName }
 			set
 			{
-				_dataStore.TestModelName = value;
+				_dataStore.{{fieldName:CapCamel:Single}} = value;
 				NotifyPropertyChanged("TestModelName")
 			}
 		}
