@@ -166,10 +166,22 @@ end
 
 
 def get_args()
+  if ARGV.count < 3
+    puts 'Invalid arguement count, arguments should be like: data.json template.cs ouput.json [optional-map.json]'
+    exit 1
+  end
+
   return_obj = OpenStruct.new
   return_obj.json_data_filename = ARGV[0]
   return_obj.template_filename = ARGV[1]
   return_obj.output_filename = ARGV[2]
+
+  if ARGV.count == 4
+    return_obj.json_map_filename = ARGV[3]
+  else
+    return_obj.json_map_filename = nil
+  end
+
   return return_obj
 end
 
@@ -184,10 +196,57 @@ def write_file_contents(filepath, content)
 end
 
 
+def map_level(json_data, json_map_data)
+  if json_data != nil && json_data.is_a?(Array)
+    json_data.each do |item|
+      map_level(item, json_map_data)
+    end
+    return
+  end
+
+  add_entries = Hash.new
+  json_data.each do |key, value|
+    if value != nil && value.is_a?(Array) || value.is_a?(Hash)
+      map_level(value, json_map_data)
+      next
+    end
+
+    map = json_map_data[key]
+    if map != nil
+      map.each do |output_key, value_map|
+        if !json_data.has_key?(output_key)
+          output_value = value
+          value_map.each do |match_expr, map_value|
+            if Regexp.new(match_expr).match(value)
+              output_value = map_value
+              break
+            end
+          end
+          add_entries.store(output_key, output_value)
+        end
+      end
+    end
+  end
+
+  add_entries.each do |key, value|
+    json_data.store(key, value)
+  end
+end
+
+
 def main(args)
-  json_data = get_file_contents(args.json_data_filename)
+  json_data_text = get_file_contents(args.json_data_filename)
   template_text = get_file_contents(args.template_filename)
-  json_object_chain = [ JSON.parse(json_data) ]
+  json_data = JSON.parse(json_data_text)
+
+  if args.json_map_filename
+    json_map_text = get_file_contents(args.json_map_filename)
+    json_map = JSON.parse(json_map_text)
+
+    map_level(json_data, json_map)
+  end
+
+  json_object_chain = [ json_data ]
   root_template = Template.new(nil, 'root')
   root_template.parse(template_text)
   output = root_template.fill(json_object_chain)

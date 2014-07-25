@@ -3,14 +3,14 @@
 	"entityName:CapCamel:Single": "TestModel",
 	"fields": [{
 			"fieldName:CapCamel:Single": "TestModelId",
-			"cstype": "Guid",
+			"type": "uniqueidentifier",
 			"readOnly": true,
 			"required": false,
 			"hasMaxLength": false
 
 		}, {
 			"fieldName:CapCamel:Single": "TestModelName",
-			"cstype": "string",
+			"type": "varchar(5)",
 			"readOnly": false,
 			"required": true,
 			"hasMaxLength": true,

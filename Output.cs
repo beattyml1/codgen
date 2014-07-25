@@ -33,7 +33,7 @@ namespace TestApp.Models
 		
 		[Required] 
 		[MaxLength(5)] 
-		public Guid TestModelName
+		public string TestModelName
 		{
 			get { return _dataStore.TestModelName }
 			set
