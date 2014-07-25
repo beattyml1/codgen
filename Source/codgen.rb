@@ -28,7 +28,12 @@ end
 
 
 def get_file_contents(filepath)
-  return File.read(filepath)
+  if File.exist?(filepath)
+    File.read(filepath)
+  else
+    puts 'Could not find file "'+filepath+'"'
+    exit 1
+  end
 end
 
 
