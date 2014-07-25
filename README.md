@@ -9,6 +9,10 @@ It works but there's not a lot of error handling yet and a bunch of shortcuts. U
 
 > ruby codgen.rb ExampleData.json ExampleTemplate.cs Output.cs
 
+or
+
+> ruby codgen.rb ExampleData.json ExampleTemplate.cs Output.cs Map.json
+
 Also this is my first project written in Ruby so while I did try, I'm sure the code is not up to best practice and would love to find out where/why.
 
 Copyright Matthew Beatty 2014
