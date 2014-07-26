@@ -2,7 +2,7 @@ using System;
 
 namespace {{ApplicationName}}.Models
 {
-	public class {{EntityName%CapCamel}} : ModelBaseClass<{{EntityName}}DataStore> where T: DataStoreBase, new()
+	public class {{EntityName}} : ModelBaseClass<{{EntityName}}DataStore> where T: DataStoreBase, new()
 	{
 		{{EntityName}}DataStore _dataStore;
 

@@ -1,22 +1,26 @@
 {
-	"application name": "test app",
-	"entity name": "test model",
+	"@application name": "test app",
+	"@entity name": "test model",
 	"fields": [
         {
-			"field name": "test model id",
+			"@field name": "test model id",
 			"type": "UniqueIdentifier",
-			"readOnly%": true,
+			"read only": true,
 			"required": false,
 			"hasMaxLength": false
-
 		},
         {
-			"field name": "test model name",
+			"@field name": "test model name",
 			"type": "varchar(5)",
-			"readOnly%": false,
+			"read only": false,
 			"required": true,
 			"hasMaxLength": true,
 			"maxLength": "5"
 		}
-	]
+	],
+    "one_to_many": [
+        {
+            "@entity name": "sub model"
+        }
+    ]
 }
