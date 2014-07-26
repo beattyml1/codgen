@@ -13,7 +13,7 @@ module AutoStyle
           next
         end
 
-        if key.index(' ') || key.index('%')
+        if key.index(/[#$% ]/)
           add_props.store(key, value)
         end
       end
@@ -30,7 +30,7 @@ module AutoStyle
 
   private
   def self.add_property_group(json_object, key, value, translate, explicit_postfix)
-    should_translate_val = value != nil && value.is_a?(String)
+    should_translate_val = value != nil && value.is_a?(String) && !key.index('$')
 
     new_key = translate.call(key)
     new_value = should_translate_val ? translate.call(value) : value
@@ -48,7 +48,7 @@ module AutoStyle
 
 
   def self.to_universal(input_string)
-    output_string = input_string.tr('%', '')
+    output_string = input_string.tr('%$#', '')
     output_string.split(' ')
   end
 

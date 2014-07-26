@@ -149,7 +149,7 @@ class Template
 
 
   def is_id_char(input_string)
-    first_match = input_string.index(/[a-zA-Z0-9_:]/)
+    first_match = input_string.index(/[a-zA-Z0-9_%$#]/)
     first_match == 0
   end
 end
