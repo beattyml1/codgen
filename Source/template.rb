@@ -59,6 +59,9 @@ class Template
 
     template_array.each do |template_data|
       template = @templates[template_name]
+
+      next if template == nil
+
       next_level = template_data
       next_levels = Array.new(levels).insert(0, next_level)
 

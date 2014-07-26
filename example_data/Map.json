@@ -3,11 +3,34 @@
     "type": {
         "cstype": {
             "(?i)bigint": "long",
+            "(?i)int": "int",
             "(?i)varchar\\([0-9]*\\)": "string",
             "(?i)nvarchar(\\([0-9]*\\))": "string",
             "(?i)text": "string",
             "(?i)smallint": "short",
-            "(?i)uniqueidentifier": "Guid"
+            "(?i)uniqueidentifier": "Guid",
+            "(?i)DateTime": "DateTime",
+            "(?i)Date": "DateTime"
+        },
+        "rbtype": {
+            "(?i)bigint": "Integer",
+            "(?i)int": "Integer",
+            "(?i)varchar\\([0-9]*\\)": "String",
+            "(?i)nvarchar(\\([0-9]*\\))": "String",
+            "(?i)text": "String",
+            "(?i)smallint": "Integer",
+            "(?i)uniqueidentifier": "String",
+            "(?i)DateTime": "DateTime",
+            "(?i)Date": "Date"
+        },
+        "jstype": {
+            "(?i)bigint": "Number",
+            "(?i)int": "Number",
+            "(?i)varchar\\([0-9]*\\)": "String",
+            "(?i)nvarchar(\\([0-9]*\\))": "String",
+            "(?i)text": "String",
+            "(?i)smallint": "Number",
+            "(?i)uniqueidentifier": "String"
         }
     }
 }
