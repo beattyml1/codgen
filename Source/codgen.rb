@@ -54,7 +54,7 @@ def main(args)
     Mapping.map_object(json_data, json_map)
   end
 
-  AutoStyle.style_casing(json_data)
+  AutoStyle.style(json_data)
 
   json_object_chain = [ json_data ]
   root_template = Template.new(nil, 'root')

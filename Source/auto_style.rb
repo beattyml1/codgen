@@ -1,17 +1,18 @@
 require 'active_support/inflector'
+require 'ostruct'
 
 module AutoStyle
   public
-  def self.style_casing(json_object)
+  def self.style(json_object)
     if json_object.is_a?(Array)
-      json_object.each { |child| style_casing(child) }
+      json_object.each { |child| style(child) }
     end
 
     add_props = Hash.new
     if json_object.is_a?(Hash)
       json_object.each do |key, value|
         if value.is_a?(Hash) || value.is_a?(Array)
-          style_casing(value)
+          style(value)
           next
         end
 
@@ -22,18 +23,16 @@ module AutoStyle
     end
 
     add_props.each do |key, value|
-      pluralize = key.index(/(?i)#singular/)
-      singularize = key.index(/(?i)#plural/)
-      add_property_group(json_object, key, value, pluralize, singularize, AutoStyle.method(:to_camel), '%camelCase')
-      add_property_group(json_object, key, value, pluralize, singularize, AutoStyle.method(:to_cap_camel), '%CapCamel')
-      add_property_group(json_object, key, value, pluralize, singularize, AutoStyle.method(:to_underscore), '%underscored')
-      add_property_group(json_object, key, value, pluralize, singularize, AutoStyle.method(:to_camel), '%CAPS_UNDERSCORE')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '%camelCase')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_cap_camel), '%CapCamel')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_underscore), '%underscored')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '%CAPS_UNDERSCORE')
     end
   end
 
 
   private
-  def self.add_property_group(json_object, key, value, pluralize, singularize, translate, explicit_postfix)
+  def self.add_property_group(json_object, key, value, translate, explicit_postfix)
     should_translate_val = value != nil && value.is_a?(String) && key.index('@')
     is_plural = key.index('#plural')
 
