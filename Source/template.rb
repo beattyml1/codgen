@@ -1,10 +1,15 @@
+require_relative 'auto_style'
+require_relative 'resources'
+
 class Template
+public
   def initialize(parent, name)
     @parent = parent
     @name = name
     @remaining_text = ''
     @templates = Hash.new
     @text = ''
+    @state_variables = Hash.new
   end
 
 
@@ -54,50 +59,63 @@ class Template
   end
 
 
-  def get_fill_template_list(template_name, template_array, levels)
-    template_list_output = ''
-
-    template_array.each do |template_data|
-      template = @templates[template_name]
-
-      next if template == nil
-
-      next_level = template_data
-      next_levels = Array.new(levels).insert(0, next_level)
-
-      template_list_output += template.fill(next_levels)
+  def set_state_variable(name, value)
+    AutoStyle.style_state_variable(name).each do |key|
+      @state_variables[key] = value
     end
-
-    template_list_output
   end
 
 
+  def fill(json_levels)
+    text = String.new(@text)
 
-  def fill(levels)
-    current_filled_template = @text
+    inserts = text.scan(INSERT_REGEX)
+    inserts.each do |insert|
+      identifier = insert[IDENTIFIER_REGEX]
+      template = @templates[identifier]
+      value = get_template_value(identifier, json_levels)
 
-    levels[0].each do |key, value|
-      if value.is_a?(Array)
-        filled_templates = get_fill_template_list(key, value, levels)
-        current_filled_template = get_fill_single_field(key, filled_templates , current_filled_template)
-      end
-    end
-
-    levels.each do |level|
-      if level.is_a?(Array)
-        next
-      end
-
-      level.each do |key, value|
-        if value.is_a?(String)
-          current_filled_template = get_fill_single_field(key, value, current_filled_template)
-        elsif !!value == value
-          current_filled_template = get_fill_single_switch(key, value, current_filled_template)
+      if template && value.is_a?(Array)
+        templates_output = ''
+        value.each do |template_data|
+          template_output = template.fill(Array.new(json_levels).insert(0, template_data))
+          templates_output += template_output
         end
+        text.sub!(insert, templates_output)
+      elsif value == nil
+        text.sub!(insert, '')
+      elsif value.is_a?(String)
+        text.sub!(insert, value)
+      else
+        puts 'Currently only strings can be inserted into a template'
+        exit 1
       end
     end
 
-    current_filled_template
+    switched_lines = text.scan(SWITCHED_LINE_REGEX)
+    switched_lines.each do |switched_line|
+      show_line = true
+
+      switches = switched_line.scan(SWITCH_REGEX)
+      switches.each do |switch|
+        identifier = switch[IDENTIFIER_REGEX]
+        value = get_template_value(identifier, json_levels)
+        is_inverted = switch.index('!') != nil
+        show_line &= is_inverted ? !value : value
+      end
+
+      if show_line
+        switches.each do |switch|
+          text.sub!(switch, '')
+        end
+      else
+        line_start = text.index(switched_line)
+        text.sub!(switched_line, '')
+        text = text[0...line_start-1] + text[line_start...text.length]
+      end
+    end
+
+    text
   end
 
 
@@ -105,28 +123,19 @@ class Template
     @name
   end
 
-  def get_fill_single_field(name, value, current_filled_template)
-    current_filled_template.gsub('{{'+name+'}}', value)
-  end
 
-
-  def get_fill_single_switch(name, value, current_filled_template)
-    regex = Regexp.new('^.*##:'+name+'\?.*$') # Should match lines ending with ##:name?
-    matches = current_filled_template.scan(regex)
-
-    if value
-      matches.each do |match|
-        inserted_line = match.sub('##:'+name+'?', '')
-        current_filled_template.sub!(match, inserted_line)
-      end
-    else
-      matches.each do |match|
-        line_start = current_filled_template.index(match)
-        current_filled_template.gsub!(match, '')
-        current_filled_template = current_filled_template[0...line_start-1] + current_filled_template[line_start...current_filled_template.length]
+private
+  include Resources
+  def get_template_value(name, json_levels)
+    json_levels.each do |level|
+      if level.is_a?(Hash) && level.has_key?(name)
+        return level[name]
       end
     end
-    current_filled_template
+
+    if @state_variables.has_key?(name)
+      return @state_variables[name]
+    end
   end
 
 

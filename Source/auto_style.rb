@@ -31,6 +31,11 @@ module AutoStyle
   end
 
 
+  def self.style_state_variable(input_string)
+    [to_camel(input_string), to_cap_camel(input_string), to_underscore(input_string), to_underscore(input_string)]
+  end
+
+
   private
   def self.add_property_group(json_object, key, value, translate, explicit_postfix)
     should_translate_val = value != nil && value.is_a?(String) && key.index('@')

@@ -61,7 +61,7 @@ def main(args)
   root_template.parse(template_text)
   output = root_template.fill(json_object_chain)
   write_file_contents(args.output_filename, output)
-  # write_file_contents('temp.json', JSON.pretty_unparse(json_data)) # frequently used debug code
+  write_file_contents('temp.json', JSON.pretty_unparse(json_data)) # frequently used debug code
 end
 
 main(get_args())
