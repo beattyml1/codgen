@@ -69,7 +69,7 @@ module AutoStyle
 
 
   def self.try_add_prop(json_object, key, value)
-    if !json_object.has_key?(key)
+    unless json_object.has_key?(key)
       json_object.store(key, value)
     end
   end

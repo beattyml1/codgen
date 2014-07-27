@@ -33,9 +33,9 @@ public
 
       @remaining_text = @remaining_text[template_tag_start_index+3...@remaining_text.length]
 
-      tag_type = get_next_word()
+      tag_type = get_next_word
 
-      template_name = get_next_word()
+      template_name = get_next_word
 
       template_tag_end_index = @remaining_text.index('>>>')
 
@@ -134,7 +134,7 @@ private
     end
 
     if @state_variables.has_key?(name)
-      return @state_variables[name]
+      @state_variables[name]
     end
   end
 

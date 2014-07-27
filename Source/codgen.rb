@@ -8,7 +8,7 @@ require_relative './mapping'
 
 def get_args
   if ARGV.count < 3
-    puts 'Invalid arguement count, arguments should be like: data.json template.cs ouput.json [optional-map.json]'
+    puts 'Invalid argument count, arguments should be like: data.json template.cs ouput.json [optional-map.json]'
     exit 1
   end
 
@@ -23,7 +23,7 @@ def get_args
     return_obj.json_map_filename = nil
   end
 
-  return return_obj
+  return_obj
 end
 
 
@@ -64,4 +64,4 @@ def main(args)
   write_file_contents('temp.json', JSON.pretty_unparse(json_data)) # frequently used debug code
 end
 
-main(get_args())
+main(get_args)
