@@ -13,7 +13,7 @@ namespace TestApp.Models
 			_dataStore = dataStore
 		}
 
-		
+
 		[ReadOnly] 
 		public Guid TestModelId
 		{
@@ -25,8 +25,6 @@ namespace TestApp.Models
 			}
 		}
 
-		public static ModelFieldInfo {{fieldName:CapCamel}}FieldInfo;
-		
 		[Required] 
 		[MaxLength(5)] 
 		public string TestModelName
@@ -39,7 +37,5 @@ namespace TestApp.Models
 			}
 		}
 
-		public static ModelFieldInfo {{fieldName:CapCamel}}FieldInfo;
-		
 	}
 }

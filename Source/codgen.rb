@@ -44,7 +44,6 @@ end
 
 def main(args)
   json_data_text = get_file_contents(args.json_data_filename)
-  template_text = get_file_contents(args.template_filename)
   json_data = JSON.parse(json_data_text)
 
   if args.json_map_filename
@@ -58,7 +57,9 @@ def main(args)
 
   json_object_chain = [ json_data ]
   root_template = Template.new(nil, 'root')
-  root_template.parse(template_text)
+  template_file = File.open(args.template_filename)
+  root_template.parse(template_file)
+  template_file.close
   output = root_template.fill(json_object_chain)
   write_file_contents(args.output_filename, output)
   write_file_contents('temp.json', JSON.pretty_unparse(json_data)) # frequently used debug code

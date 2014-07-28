@@ -12,48 +12,34 @@ public
     @state_variables = Hash.new
   end
 
+  include Resources
 
-  def parse(remaining_text)
-    @remaining_text = remaining_text
-
-    if @remaining_text.length == 0
-      return ''
-    end
-
-    loop do
-      template_tag_start_index = @remaining_text.index('<<<')
-
-      if template_tag_start_index == nil
-        @text += @remaining_text
-        return ''
-      end
-
-      before_text = @remaining_text[0...template_tag_start_index]
-      @text += before_text
-
-      @remaining_text = @remaining_text[template_tag_start_index+3...@remaining_text.length]
-
-      tag_type = get_next_word
-
-      template_name = get_next_word
-
-      template_tag_end_index = @remaining_text.index('>>>')
-
-      @remaining_text = @remaining_text[template_tag_end_index+3, @remaining_text.length-3-template_tag_end_index]
-
-      if tag_type == 'start'
-        template = Template.new(self, template_name)
-        @templates.store(template_name, template)
-        @text += '{{'+template_name+'}}'
-        @remaining_text = template.parse(@remaining_text)
-      elsif tag_type == 'end'
-        if template_name == @name
-          return @remaining_text
+  def parse(template_file)
+    until template_file.eof
+      line = template_file.readline
+      tags = line.scan(TEMPLATE_TAG_REGEX)
+      if tags.count > 1
+        Logger.error('Cannot have multiple template tags on the same line')
+      elsif tags.count == 1
+        tag = tags[0]
+        if tag.index(TEMPLATE_START_TAG_REGEX)
+          id = tag.scan(IDENTIFIER_REGEX)[1]
+          template = Template.new(self, id)
+          @templates.store(id, template)
+          @text += '{{'+id+'}}'
+          template.parse(template_file)
+        elsif tag.index(TEMPLATE_END_TAG_REGEX)
+          id = tag.scan(IDENTIFIER_REGEX)[1]
+          if id == @name
+            return
+          else
+            Logger.error('End tag encountered that that does not correspond with the current start tag')
+          end
         else
-          throw "Template close tag '"+template_name+"' does not match template start tag '"+@name+"'"
+          Logger.error("Tag's first word must be start or end and it's second must be  valid identifier")
         end
       else
-        throw "Expected template end tag for '"+@name+"' encounterd end tag for '"+template_name+"'"
+        @text += line
       end
     end
   end
@@ -111,7 +97,9 @@ public
       else
         line_start = text.index(switched_line)
         text.sub!(switched_line, '')
-        text = text[0...line_start-1] + text[line_start...text.length]
+        unless line_start == 0
+          text = text[0...line_start-1] + text[line_start...text.length]
+        end
       end
     end
 
@@ -125,7 +113,6 @@ public
 
 
 private
-  include Resources
   def get_template_value(name, json_levels)
     json_levels.each do |level|
       if level.is_a?(Hash) && level.has_key?(name)

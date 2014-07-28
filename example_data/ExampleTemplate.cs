@@ -27,7 +27,6 @@ namespace {{ApplicationName}}.Models
 			}
 		}
 
-		public static ModelFieldInfo {{fieldName:CapCamel}}FieldInfo;
 		<<< end fields >>>
 	}
 }
