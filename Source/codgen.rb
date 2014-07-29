@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 require 'ostruct'
 require 'json'
-require_relative 'template'
-require_relative './auto_style'
-require_relative './mapping'
+require_relative  'codgen_engine'
 
 
 def get_args
@@ -46,23 +44,17 @@ def main(args)
   json_data_text = get_file_contents(args.json_data_filename)
   json_data = JSON.parse(json_data_text)
 
+  json_map = nil
   if args.json_map_filename
     json_map_text = get_file_contents(args.json_map_filename)
     json_map = JSON.parse(json_map_text)
-
-    Mapping.map_object(json_data, json_map)
   end
 
-  AutoStyle.style(json_data)
-
-  json_object_chain = [ json_data ]
-  root_template = Template.new(nil, 'root')
   template_file = File.open(args.template_filename)
-  root_template.parse(template_file)
+  output = CodgenEngine.run_single(json_data, template_file, json_map)
   template_file.close
-  output = root_template.fill(json_object_chain)
   write_file_contents(args.output_filename, output)
-  write_file_contents('temp.json', JSON.pretty_unparse(json_data)) # frequently used debug code
+  # write_file_contents('temp.json', JSON.pretty_unparse(json_data)) # frequently used debug code
 end
 
 main(get_args)

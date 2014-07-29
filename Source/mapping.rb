@@ -17,7 +17,7 @@ module Mapping
       map = json_map_data[key]
       if map != nil
         map.each do |output_key, value_map|
-          if !json_data.has_key?(output_key)
+          unless json_data.has_key?(output_key)
             output_value = value
             value_map.each do |match_expr, map_value|
               if Regexp.new(match_expr).match(value)
