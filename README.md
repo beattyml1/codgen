@@ -3,16 +3,16 @@ codgen
 
 A Cross Language, Template+JSON Code Generator 
 
-Released under GNU GPL v3.
+Written in Ruby and released under GNU GPL v3.
 
-Check out the wiki for info on how to use it or try out the the example code.
+Check out the wiki for info on how to use it or try it out on the example data and templates using the below commands.
 
 > cd example_data
 >
 > ruby ../Source/codgen.rb ExampleData.json ExampleTemplate.cs Output.cs Map.json
 
-Note that this project is still fairly young so there maybe some bugs and poor error handling here and there. I would love it if you could report them. If I can I'll try to get to them in a day or so.
+If you find any bugs or difficult to understand messages I would love it if you could report them so I can make it better. 
 
-Also this is my first project written in Ruby so while I did try, I'm sure the code some parts that aren't best practice and would love to find out where/why.
+Also any feedback on the code itself is also appreciated as I am newer to Ruby.
 
 Copyright Matthew Beatty 2014
