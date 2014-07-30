@@ -124,31 +124,4 @@ private
       @state_variables[name]
     end
   end
-
-
-  def get_next_word
-    @remaining_text = @remaining_text.lstrip
-
-    id = ''
-
-    while is_id_char(@remaining_text[0])
-      id += @remaining_text[0]
-
-      if @remaining_text.length > 1
-        @remaining_text = @remaining_text[1...@remaining_text.length]
-      else
-        throw 'Expected end of tag or next word'
-      end
-    end
-
-    @remaining_text = @remaining_text.rstrip
-
-    return id
-  end
-
-
-  def is_id_char(input_string)
-    first_match = input_string.index(/[a-zA-Z0-9_%$#]/)
-    first_match == 0
-  end
 end
