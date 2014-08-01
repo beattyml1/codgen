@@ -65,6 +65,10 @@ public
       if template && value.is_a?(Array)
         templates_output = ''
         value.each do |template_data|
+
+          template.set_state_variable('is last template instance', template_data === value[-1])
+          template.set_state_variable('is first template instance', template_data === value[0])
+
           template_output = template.fill(Array.new(json_levels).insert(0, template_data))
           templates_output += template_output
         end

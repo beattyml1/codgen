@@ -13,6 +13,7 @@ namespace {{ApplicationName}}.Models
 			_dataStore = dataStore
 		}
         <<< start fields >>>
+		##:IsFirstTemplateInstance?
 		[ReadOnly] ##:ReadOnly?
 		[Required] ##:required?
 		[MaxLength({{maxLength}})] ##:hasMaxLength?
@@ -25,6 +26,7 @@ namespace {{ApplicationName}}.Models
 				NotifyPropertyChanged("{{FieldName}}")
 			}
 		}
+		##:!IsLastTemplateInstance?
 		<<< end fields >>>
 	}
 }

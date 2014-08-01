@@ -12,6 +12,7 @@ namespace TestApp.Models
 		{
 			_dataStore = dataStore
 		}
+		
 		[ReadOnly] 
 		public Guid TestModelId
 		{
@@ -22,6 +23,7 @@ namespace TestApp.Models
 				NotifyPropertyChanged("TestModelId")
 			}
 		}
+		
 		[Required] 
 		[MaxLength(5)] 
 		public string TestModelName
