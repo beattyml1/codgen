@@ -1,5 +1,6 @@
 require_relative 'auto_style'
 require_relative 'resources'
+require_relative 'debug_helper'
 
 class Template
 public
@@ -67,6 +68,7 @@ public
           template_output = template.fill(Array.new(json_levels).insert(0, template_data))
           templates_output += template_output
         end
+
         text.sub!(insert, templates_output)
       elsif value == nil
         text.sub!(insert, '')
@@ -78,11 +80,12 @@ public
       end
     end
 
-    switched_lines = text.scan(SWITCHED_LINE_REGEX)
-    switched_lines.each do |switched_line|
+    output = ''
+    text.each_line do |line|
       show_line = true
 
-      switches = switched_line.scan(SWITCH_REGEX)
+      switches = line.scan(SWITCH_REGEX)
+
       switches.each do |switch|
         identifier = switch[IDENTIFIER_REGEX]
         value = get_template_value(identifier, json_levels)
@@ -91,19 +94,11 @@ public
       end
 
       if show_line
-        switches.each do |switch|
-          text.sub!(switch, '')
-        end
-      else
-        line_start = text.index(switched_line)
-        text.sub!(switched_line, '')
-        unless line_start == 0
-          text = text[0...line_start-1] + text[line_start...text.length]
-        end
+        output += line.sub(SWITCH_REGEX, '')
       end
     end
 
-    text
+    output
   end
 
 

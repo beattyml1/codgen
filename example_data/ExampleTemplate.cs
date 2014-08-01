@@ -12,10 +12,9 @@ namespace {{ApplicationName}}.Models
 		{
 			_dataStore = dataStore
 		}
-
-		<<< start fields >>>
-		[Required] ##:required?
+        <<< start fields >>>
 		[ReadOnly] ##:ReadOnly?
+		[Required] ##:required?
 		[MaxLength({{maxLength}})] ##:hasMaxLength?
 		public {{cstype}} {{FieldName}}
 		{
@@ -26,7 +25,6 @@ namespace {{ApplicationName}}.Models
 				NotifyPropertyChanged("{{FieldName}}")
 			}
 		}
-
 		<<< end fields >>>
 	}
 }
