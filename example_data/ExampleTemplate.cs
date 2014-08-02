@@ -15,7 +15,7 @@ namespace {{ApplicationName}}.Models
         <<< start fields >>>
 		##:IsFirstTemplateInstance?
 		[ReadOnly] ##:ReadOnly?
-		[Required] ##:required?
+		[Required] ##:Required?
 		[MaxLength({{maxLength}})] ##:hasMaxLength?
 		public {{cstype}} {{FieldName}}
 		{

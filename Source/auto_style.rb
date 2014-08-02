@@ -16,7 +16,7 @@ module AutoStyle
           next
         end
 
-        if key.index(/[#@ ]/)
+        if key.index(/[#@$ ]/)
           add_props.store(key, value)
         end
       end
@@ -76,7 +76,7 @@ module AutoStyle
 
 
   def self.to_universal(input_string)
-    output_string = input_string.tr('$#$@', '')
+    output_string = input_string.tr('$#@', '')
     output_string.split(' ')
   end
 
