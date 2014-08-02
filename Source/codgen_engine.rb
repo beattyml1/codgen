@@ -1,6 +1,6 @@
 require_relative 'template'
-require_relative './auto_style'
-require_relative './mapping'
+require_relative 'auto_style'
+require_relative 'mapping'
 
 module CodgenEngine
   def self.run_single(json_data, template_stream, map_data)
