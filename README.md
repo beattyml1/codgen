@@ -20,3 +20,7 @@ Copyright Matthew Beatty 2014
 If you use this in a paid or commercial context consider tipping at:
 
 https://www.gittip.com/beattyml1/
+
+or on flattr
+
+https://flattr.com/profile/beattyml1
