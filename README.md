@@ -16,3 +16,7 @@ If you find any bugs or difficult to understand messages I would love it if you 
 Also any feedback on the code itself is also appreciated as I am newer to Ruby.
 
 Copyright Matthew Beatty 2014
+
+If you use this in a paid or commercial context consider tipping at:
+
+https://www.gittip.com/beattyml1/
