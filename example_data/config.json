@@ -1,0 +1,25 @@
+{
+    "map": "Map.json",
+    "templates": [
+        {
+            "in": "Input/model_template.rb",
+            "source": "entities",
+            "out": "Output/Ruby/{{application_name}}/Models/{{entity_name}}.rb"
+        },
+        {
+            "in": "Input/ModelTemplate.cs",
+            "source": "entities",
+            "out": "Output/MsMvc/{{ApplicationName}}/Models/{{EntityName}}.cs"
+        },
+        {
+            "in": "Input/DbContextTemplate.cs",
+            "source": "entities",
+            "out": "Output/MsMvc/{{ApplicationName}}/DAL/{{ApplicationName}}Context.cs"
+        },
+        {
+            "in": "Input/CreateDatabase.sql",
+            "out": "Output/Create{{ApplicationName}}Database.sql"
+        }
+    ],
+    "data": "Input/example-data.json"
+}

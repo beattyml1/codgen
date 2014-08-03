@@ -6,4 +6,5 @@ module Resources
   TEMPLATE_TAG_REGEX = /<<<[a-zA-Z0-9_% ]+>>>/
   TEMPLATE_START_TAG_REGEX = /<<<[ ]*start[ ]*[a-zA-Z0-9_%]+[ ]*>>>/
   TEMPLATE_END_TAG_REGEX = /<<<[ ]*end[ ]*[a-zA-Z0-9_%]+[ ]*>>>/
+  MACRO_REGEX = /~~[a-zA-Z0-9_%]+:/
 end

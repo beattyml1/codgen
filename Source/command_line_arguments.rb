@@ -1,8 +1,12 @@
 class CommandLineArguments
   def initialize(arguments)
-    if arguments.count < 3
+    if arguments.count < 1
       puts 'Invalid argument count, arguments should be like: data.json template.cs ouput.json [optional-map.json]'
       exit 1
+    end
+
+    if arguments.count == 1
+      @json_config = arguments[0]
     end
 
     @json_data_filename = arguments[0]
@@ -14,6 +18,11 @@ class CommandLineArguments
     else
       @json_map_filename = nil
     end
+  end
+
+
+  def json_config
+    @json_config
   end
 
 

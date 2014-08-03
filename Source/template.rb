@@ -4,13 +4,15 @@ require_relative 'debug_helper'
 
 class Template
 public
-  def initialize(parent, name)
+  def initialize(parent, name, text = '')
     @parent = parent
     @name = name
     @remaining_text = ''
     @templates = Hash.new
-    @text = ''
+    @text = text
     @state_variables = Hash.new
+    @macros_unfilled = Hash.new
+    @macros_filled = Hash.new
   end
 
   include Resources
@@ -18,6 +20,18 @@ public
   def parse(template_file)
     until template_file.eof
       line = template_file.readline
+
+      macros = line.scan(MACRO_REGEX)
+      if macros.count > 1
+        Logger.error('Cannot have multiple macros on the same line')
+      elsif macros.count == 1
+        macro = macros[0]
+        macro_name = macro.scan(IDENTIFIER_REGEX)[0]
+          value = line.sub(macro, '').strip
+          @macros_unfilled[macro_name] = value
+        next
+      end
+
       tags = line.scan(TEMPLATE_TAG_REGEX)
       if tags.count > 1
         Logger.error('Cannot have multiple template tags on the same line')
@@ -54,8 +68,25 @@ public
 
 
   def fill(json_levels)
-    text = String.new(@text)
+    @macros_unfilled.each do |key, value|
+      @macros_filled[key] = do_inserts(json_levels, value)
+    end
+    text = do_inserts(json_levels, @text)
+    do_switches(json_levels, text)
+  end
 
+
+  def name
+    @name
+  end
+
+  def filename
+    @macros_filled['filename']
+  end
+
+private
+  def do_inserts(json_levels, input_text)
+    text = String.new(input_text)
     inserts = text.scan(INSERT_REGEX)
     inserts.each do |insert|
       identifier = insert[IDENTIFIER_REGEX]
@@ -79,13 +110,15 @@ public
       elsif value.is_a?(String)
         text.sub!(insert, value)
       else
-        puts 'Currently only strings can be inserted into a template'
-        exit 1
+        Logger.error 'Currently only strings can be inserted into a template'
       end
     end
+    text
+  end
 
+  def do_switches(json_levels, input_text)
     output = ''
-    text.each_line do |line|
+    input_text.each_line do |line|
       show_line = true
 
       switches = line.scan(SWITCH_REGEX)
@@ -105,18 +138,15 @@ public
     output
   end
 
-
-  def name
-    @name
-  end
-
-
-private
   def get_template_value(name, json_levels)
     json_levels.each do |level|
       if level.is_a?(Hash) && level.has_key?(name)
         return level[name]
       end
+    end
+
+    if @macros_filled.has_key?(name)
+      @macros_filled[name]
     end
 
     if @state_variables.has_key?(name)
