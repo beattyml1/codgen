@@ -9,7 +9,7 @@ Check out the wiki for info on how to use it or try it out on the example data a
 
 > cd example_data
 >
-> ruby ../Source/codgen.rb ExampleData.json ExampleTemplate.cs Output.cs Map.json
+> ruby ../Source/codgen.rb config.json
 
 If you find any bugs or difficult to understand messages I would love it if you could report them so I can make it better. 
 
