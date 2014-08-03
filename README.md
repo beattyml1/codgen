@@ -3,7 +3,7 @@ codgen
 
 A Cross Language, Template+JSON Code Generator 
 
-Written in Ruby and released under GNU GPL v3.
+Written in Ruby and released under GNU AGPL v3.
 
 Check out the wiki for info on how to use it or try it out on the example data and templates using the below commands.
 
