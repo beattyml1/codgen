@@ -14,5 +14,4 @@ module RegularExpressions
   ENDIF_TAG_REGEX = /<<<[ ]*endif[ ]+>>>/
   CONDITIONAL_TAG_REGEX = /<<<[ ]*if|elseif|else|endif[ ]+[a-zA-Z0-9_% |!&()]+[ ]*>>>/
   STATEMENT_REGEX = /[a-zA-Z0-9_% |&!()]+/
-  IDENTIFIER_OR_LOGIC_OPERATOR_CHAR = /[a-zA-Z0-9_%|&]/
 end
