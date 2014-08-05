@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 require 'ostruct'
 require 'json'
-require_relative  'codgen_engine'
+require_relative 'codgen_core'
 require_relative 'command_line_arguments'
-require_relative 'logger'
+require_relative 'utilities/logger'
 require 'fileutils'
 
 
@@ -24,27 +24,13 @@ end
 
 
 def main(args)
-  if args.json_config == nil
-    json_data_text = get_file_contents(args.json_data_filename)
-    json_data = JSON.parse(json_data_text)
-
-    json_map = nil
-    if args.json_map_filename
-      json_map_text = get_file_contents(args.json_map_filename)
-      json_map = JSON.parse(json_map_text)
-    end
-
-    template_file = File.open(args.template_filename)
-    output = CodgenEngine.run_single(json_data, template_file, json_map)
-    template_file.close
-  else
+  if args.json_config != nil
     json_config_text = get_file_contents(args.json_config)
     json_config = JSON.parse(json_config_text)
     output = CodgenEngine.run(json_config)
-  end
-
-  output.each do |file|
-    write_file_contents(file.path, file.text)
+    output.each do |file|
+      write_file_contents(file.path, file.text)
+    end
   end
 end
 
