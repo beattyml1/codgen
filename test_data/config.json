@@ -2,7 +2,7 @@
     "map": "Map.json",
     "templates": [
         {
-            "in": "Input/model_template.rb",
+            "in": "Input/model_template.rb.ctemp",
             "source": "entities",
             "out": "Output/Ruby/{{application_name}}/Models/{{entity_name}}.rb"
         },
