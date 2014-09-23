@@ -49,15 +49,15 @@ class Parser
             Logger.error('End tag encountered that that does not correspond with the current start tag')
           end
         elsif tag.index(IF_TAG_REGEX)
-          create_and_process_new_conditional(current_section, 'if', @file_stream, tag, true, nil)
+          create_and_process_new_conditional(current_section, 'if', tag, true, nil)
         elsif tag.index(ELSEIF_TAG_REGEX)
-          create_and_process_new_conditional(current_section.parent, 'elseif', @file_stream, tag, true, current_section)
+          create_and_process_new_conditional(current_section.parent, 'elseif', tag, true, current_section)
           return current_section
         elsif tag.index(ELSE_TAG_REGEX)
-          create_and_process_new_conditional(current_section.parent, 'else', @file_stream, tag, false, current_section)
+          create_and_process_new_conditional(current_section.parent, 'else', tag, false, current_section)
           return current_section
         elsif tag.index(ENDIF_TAG_REGEX)
-          create_and_process_new_conditional(current_section.parent, 'endif', @file_stream, tag, false, current_section)
+          create_and_process_new_conditional(current_section.parent, 'endif', tag, false, current_section)
           return current_section
         else
           Logger.error("Tag's first word must be start or end and it's second must be  valid identifier")
@@ -78,7 +78,7 @@ class Parser
   end
 
 
-  def create_and_process_new_conditional(current_section, type, file_stream, tag, has_condition, previous_condition)
+  def create_and_process_new_conditional(current_section, type, tag, has_condition, previous_condition)
     if previous_condition != nil && !previous_condition.is_a?(Conditional)
       Logger.error('elseif must have a corresponding if')
     end
@@ -86,7 +86,7 @@ class Parser
     section = Conditional.new(current_section, type+SecureRandom.uuid.tr('-', ''), previous_condition)
 
     if has_condition
-      statement_text = tag.scan(STATEMENT_REGEX)[0].sub(/elseif|else|endif|if/, '').strip
+      statement_text = tag.scan(STATEMENT_REGEX)[0].sub(CONDITIONAL_KEYWORD, '').strip
       section.statement = Statement.new
       section.statement.parse(statement_text)
     end

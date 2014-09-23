@@ -1,5 +1,10 @@
 {
 	"@application name": "my blog",
+    "test_escapes": [
+        {
+            "codgenVar": "The Rain in Spain stays mainly in the plains"
+        }
+    ],
     "entities": [
         {
             "@entity name": "post",

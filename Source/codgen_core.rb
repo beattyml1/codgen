@@ -3,6 +3,7 @@ require_relative 'template_engine/section'
 require_relative 'json_translation/auto_style'
 require_relative 'json_translation/mapping'
 require_relative '../Source/utilities/logger'
+require_relative 'template_engine/post_fill_tasks'
 
 module CodgenEngine
   def self.run(json_config)
@@ -35,25 +36,27 @@ module CodgenEngine
         instances = json_data[source]
         instances.each do |instance_data|
           json_object_chain = [instance_data, json_data]
-          output_path = output_path_template.fill(json_object_chain)
-          result = FilledTemplate.new
-          result.text = root_template.fill(json_object_chain)
-          result.path = output_path
-          filled_templates.push(result)
+          filled_template = merge_template_and_data(json_object_chain, root_template, output_path_template)
+          filled_templates.push(filled_template)
         end
       else
         json_object_chain = [json_data]
-        output_path = output_path_template.fill(json_object_chain)
-        result = FilledTemplate.new
-        result.text = root_template.fill(json_object_chain)
-        result.path = output_path
-        filled_templates.push(result)
+        filled_template = merge_template_and_data(json_object_chain, root_template, output_path_template)
+        filled_templates.push(filled_template)
       end
     end
 
     filled_templates
   end
 
+  def self.merge_template_and_data(json_object_chain, root_template, output_path_template)
+    output_path = output_path_template.fill(json_object_chain)
+    result = FilledTemplate.new
+    result.text = root_template.fill(json_object_chain)
+    result.path = output_path
+    result.text = PostFillTasks.process_escapes(result.text)
+    result
+  end
 
   def self.get_data_if_not_data(filepath_or_data)
     if filepath_or_data != nil
