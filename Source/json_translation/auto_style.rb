@@ -23,10 +23,10 @@ module AutoStyle
     end
 
     add_props.each do |key, value|
-      add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '%camelCase')
-      add_property_group(json_object, key, value, AutoStyle.method(:to_cap_camel), '%CapCamel')
-      add_property_group(json_object, key, value, AutoStyle.method(:to_underscore), '%underscored')
-      add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '%CAPS_UNDERSCORE')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '!camelCase')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_cap_camel), '!CapCamel')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_underscore), '!underscored')
+      add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '!CAPS_UNDERSCORE')
     end
   end
 
@@ -39,7 +39,7 @@ module AutoStyle
   private
   def self.add_property_group(json_object, key, value, translate, explicit_postfix)
     should_translate_val = value != nil && value.is_a?(String) && key.index('@')
-    is_plural = key.index('#plural')
+    is_plural = key.index('?plural')
 
     new_key = translate.call(key)
     new_value = should_translate_val ? translate.call(value) : value
@@ -76,7 +76,7 @@ module AutoStyle
 
 
   def self.to_universal(input_string)
-    output_string = input_string.tr('$#@', '')
+    output_string = input_string.tr('$?@', '')
     output_string.split(' ')
   end
 

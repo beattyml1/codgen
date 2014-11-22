@@ -34,15 +34,11 @@ module CodgenEngine
         end
 
         instances = json_data[source]
-        instances.each do |instance_data|
-          json_object_chain = [instance_data, json_data]
-          filled_template = merge_template_and_data(json_object_chain, root_template, output_path_template)
-          filled_templates.push(filled_template)
+        instances.each do ||
+
         end
       else
-        json_object_chain = [json_data]
-        filled_template = merge_template_and_data(json_object_chain, root_template, output_path_template)
-        filled_templates.push(filled_template)
+
       end
     end
 
