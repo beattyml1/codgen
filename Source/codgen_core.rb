@@ -1,9 +1,7 @@
-require_relative 'template_engine/parser'
-require_relative 'template_engine/section'
 require_relative 'json_translation/auto_style'
 require_relative 'json_translation/mapping'
 require_relative '../Source/utilities/logger'
-require_relative 'template_engine/post_fill_tasks'
+require_relative 'template_engine/template'
 
 module CodgenEngine
   def self.run(json_config)
@@ -19,27 +17,9 @@ module CodgenEngine
     filled_templates = Array.new
 
     templates = json_config['templates']
-    templates.each do |template|
-      template_path = template['in']
-      template_file = File.open(template_path)
-      source = template['source']
-      output_path_template_text = template['out']
-      output_path_template = Section.new(nil, nil, output_path_template_text)
-
-      root_template = Parser.parse(template_file)
-
-      if source != nil
-        if !source.is_a?(String) || !json_data[source].is_a?(Array)
-          Logger.error('source property of template must point to a array at root level in json data file')
-        end
-
-        instances = json_data[source]
-        instances.each do ||
-
-        end
-      else
-
-      end
+    templates.each do |template_info|
+      template = Template(template_info, json_data)
+      template.fill_template.each {|filled_template| filled_templates.push(filled_template)}
     end
 
     filled_templates
