@@ -1,26 +1,32 @@
-codgen
-======
+# Codgen
 
-A Cross Language, Template+JSON Code Generator 
+A cross language template base code generator, capable of generating multiple applications from a common model.
 
-Written in Ruby and released under GNU AGPL v3.
 
-Check out the wiki for info on how to use it or try it out on the example data and templates using the below commands.
+## Installation
 
-> cd example_data
->
-> ruby ../Source/codgen.rb config.json
+Add this line to your application's Gemfile:
 
-If you find any bugs or difficult to understand messages I would love it if you could report them so I can make it better. 
+```ruby
+gem 'codgen'
+```
 
-Also any feedback on the code itself is also appreciated as I am newer to Ruby.
+And then execute:
 
-Copyright Matthew Beatty 2014
+    $ bundle
 
-If you use this in a paid or commercial context consider tipping at:
+Or install it yourself as:
 
-https://www.gittip.com/beattyml1/
+    $ gem install codgen
 
-or on flattr
+## Usage
 
-https://flattr.com/profile/beattyml1
+    $ codgen codgen_config.json
+
+## Contributing
+
+1. Fork it ( https://github.com/[my-github-username]/codgen/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
