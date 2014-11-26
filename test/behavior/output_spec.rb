@@ -9,7 +9,7 @@ describe 'Application' do
 
     FileUtils.rm_rf($output_directory)
 
-    puts `ruby ../../bin/codgen.rb config.json`
+    puts `../../bin/codgen.rb config.json`
   end
 
   it 'should produce all expected files' do
