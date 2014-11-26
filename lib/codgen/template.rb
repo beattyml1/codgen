@@ -1,5 +1,6 @@
 require 'mustache'
 require_relative 'flattener'
+require_relative 'logger'
 
 module Codgen
   class Template
@@ -32,6 +33,6 @@ module Codgen
       end
     end
 
-    attr_reader :data, :input_path, :data # Used to unit test
+    attr_reader :data, :input_path, :template # Used to unit test
   end
 end

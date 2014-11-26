@@ -19,20 +19,12 @@ module Codgen
 
     templates = json_config['templates']
     templates.each do |template_info|
+
       template = Template.new(template_info, json_data)
       template.fill_template.each {|filled_template| filled_templates.push(filled_template)}
     end
 
     filled_templates
-  end
-
-  def self.merge_template_and_data(json_object_chain, root_template, output_path_template)
-    output_path = output_path_template.fill(json_object_chain)
-    result = FilledTemplate.new
-    result.text = root_template.fill(json_object_chain)
-    result.path = output_path
-    result.text = PostFillTasks.process_escapes(result.text)
-    result
   end
 
   def self.get_data_if_not_data(filepath_or_data)
