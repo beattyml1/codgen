@@ -1,10 +1,10 @@
 Create Database {{ApplicationName}}
-<<< start entities >>>
+{{#entities}}
 
 Create Table {{EntityNames}} (
-  <<< start fields >>>
+  {{#fields}}
   {{FieldName}} {{type}}
   , ##:!IsLastTemplateInstance?
-  <<< end fields >>>
+  {{/fields}}
 )
-<<< end entities >>>
+{{/entities}}

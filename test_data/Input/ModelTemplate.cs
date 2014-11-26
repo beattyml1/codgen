@@ -8,11 +8,12 @@ namespace {{ApplicationName}}.Models
 {
 	public class {{EntityName}}
 	{
-        <<< start fields >>>
+        {{#fields}}
 		[Required] ##:Required?
-		[StringLength({{maxLength}})] ##:hasMaxLength?
+		{{#hasMaxLength}}
+		[StringLength({{maxLength}})]
+		{{/hasMaxLength}}
 		public {{cstype}} {{FieldName}} { get; set; }
-		##:!IsLastTemplateInstance?
 		<<< end fields >>>
 		<<< start hasmany >>>
 		##:IsFirstTemplateInstance?

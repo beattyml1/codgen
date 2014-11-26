@@ -6,9 +6,9 @@ namespace {{ApplicationName}}.DAL
 {
     public class {{ApplicationName}}Context : DbContext
     {
-        <<< start entities >>>
+        {{#entities}}
         public DbSet<Blog> {{EntityNames}} { get; set; }
-        <<< end entities >>>
+        {{/entities}}
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
