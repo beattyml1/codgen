@@ -5,7 +5,7 @@ module Flattener
   # @return [Array, Hash]
   def self.merge(data_root, properties)
     current = data_root
-    obj_out = val
+    obj_out = Hash.new
     properties.each { |property|
       current.each {|prop, val| obj_out[prop] = val}
       current = current[property]
@@ -19,8 +19,9 @@ module Flattener
       current.each { |child|
         if child.is_a?(Hash)
           array_obj = Hash.new
-          array_out.push(array_obj)
+          obj_out.each {|prop, val| array_obj[prop] = val}
           child.each {|prop, val| array_obj[prop] = val}
+          array_out.push(array_obj)
         end
       }
       return array_out
