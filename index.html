@@ -31,19 +31,39 @@
         <hr>
 
         <section id="main_content">
-          <p>Written in Ruby and released under GNU GPL v3.</p>
+          <h1>
+<a id="codgen" class="anchor" href="#codgen" aria-hidden="true"><span class="octicon octicon-link"></span></a>Codgen</h1>
 
-<p>Check out the wiki for info on how to use it or try it out on the example data and templates using the below commands.</p>
+<p>A cross language, template based, code generator, capable of generating multiple applications from a common model.</p>
 
-<pre><code>cd example_data
-ruby ../Source/codgen.rb ExampleData.json ExampleTemplate.cs Output.cs Map.json
+<p>Right now it uses mustache for it's template files and JSON for it's config and model. We're working on making it so that you can use whatever template engine you want though like mustache or erb.</p>
+
+<p>If you find bugs or bad error messages be sure to log an issue.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<pre><code>$ gem install codgen
 </code></pre>
 
-<p>If you find any bugs or difficult to understand messages I would love it if you could report them so I can make it better. </p>
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>Also any feedback on the code itself is also appreciated as I am newer to Ruby.</p>
+<pre><code>$ codgen.rb codgen_config.json
+</code></pre>
 
-<p>Copyright Matthew Beatty 2014</p>
+<p>For more info see the <a href="https://github.com/beattyml1/codgen/wiki">Wiki Page</a></p>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it ( <a href="https://github.com/%5Bmy-github-username%5D/codgen/fork">https://github.com/[my-github-username]/codgen/fork</a> )</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create a new Pull Request</li>
+</ol>
         </section>
 
         <footer>
