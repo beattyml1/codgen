@@ -21,7 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-    $ codgen codgen_config.json
+    $ codgen.rb codgen_config.json
 
 ## Contributing
 
