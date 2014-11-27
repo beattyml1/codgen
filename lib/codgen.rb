@@ -32,7 +32,7 @@ module Codgen
       if filepath_or_data.is_a?(String)
         file = File.read(filepath_or_data)
         JSON.parse(file)
-      elsif map.is_a?(Hash)
+      elsif filepath_or_data.is_a?(Hash)
         filepath_or_data
       else
         Logger.error('In json config file: "map" must be either a filepath or a json object.')

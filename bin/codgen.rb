@@ -41,8 +41,8 @@ def main(args)
     json_config_text = get_file_contents(args.json_config)
     json_config = JSON.parse(json_config_text)
     output = Codgen.run(json_config)
-    output.each do |file|
-      write_file_contents(file.path, file.text)
+    output.each do |path, text|
+      write_file_contents(path, text)
     end
   end
 end

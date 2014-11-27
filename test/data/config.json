@@ -19,16 +19,6 @@
         {
             "in": "Input/CreateDatabase.sql",
             "out": "Output/Create{{ApplicationName}}Database.sql"
-        },
-        {
-            "in": "Input/test_conditionals",
-            "source": "test_conditionals",
-            "out": "Output/conditionals/{{name}}"
-        },
-        {
-            "in": "Input/test_escapes",
-            "source": "test_escapes",
-            "out": "Output/test_escapes"
         }
     ],
     "data": "Input/example-data.json"

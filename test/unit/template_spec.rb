@@ -3,7 +3,7 @@ require_relative '../../lib/codgen/template'
 
 describe 'template' do
   config = {'source' => 'data', 'in' => 'Input/hello_world.txt.mustache', 'out' => 'Output/hello_world.txt' }
-  data_root = { 'data' => [{'name' => 'World'}, 'foo' => 'blah']}
+  data_root = { 'data' => [{'name' => 'World'}], 'foo' => 'blah' }
   template_text = 'Hello {{name}}'
   template = Codgen::Template.new(config, data_root)
 
@@ -22,6 +22,9 @@ describe 'template' do
     end
     it 'should return a output file with location "Output/hello_world.txt"' do
       expect(template.fill_template.keys[0]).to eq('Output/hello_world.txt')
+    end
+    it 'should return a output file with location "Output/hello_world.txt"' do
+      expect(template.fill_template['Output/hello_world.txt']).to eq('Hello World')
     end
   end
 end

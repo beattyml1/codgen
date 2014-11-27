@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Spatial;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -9,21 +8,19 @@ namespace {{ApplicationName}}.Models
 	public class {{EntityName}}
 	{
         {{#fields}}
-		[Required] ##:Required?
+        {{#Required}}
+        [Required]
+		{{/Required}}
 		{{#hasMaxLength}}
 		[StringLength({{maxLength}})]
 		{{/hasMaxLength}}
 		public {{cstype}} {{FieldName}} { get; set; }
-		<<< end fields >>>
-		<<< start hasmany >>>
-		##:IsFirstTemplateInstance?
+		{{/fields}}
+		{{#hasmany}}
 		ICollection<{{EntityName}}> {{EntityNames}} { get; set; }
-		##:!IsLastTemplateInstance?
-		<<< end hasmany >>>
-		<<< start belongsto >>>
-		##:IsFirstTemplateInstance?
+		{{/hasmany}}
+		{{#belongsto}}
 		{{EntityName}} {{EntityName}} { get; set; }
-		##:!IsLastTemplateInstance?
-		<<< end belongsto >>>
+		{{/belongsto}}
 	}
 }

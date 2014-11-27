@@ -10,7 +10,7 @@ module Codgen
       @input_path = template_info['in']
       @out_raw = template_info['out']
       source_raw = template_info['source']
-      source_location = source_raw.split('.')
+      source_location = source_raw != nil ? source_raw.split('.') : []
       @data = Flattener.merge(data_root, source_location)
       @template = Template.get_template(@input_path)
     end
@@ -18,7 +18,9 @@ module Codgen
     def fill_template
       if @data.is_a?(Array)
         output = Hash.new
-        @data.each { |data| output.store(Mustache.render(@out_raw, data), Mustache.render(@template, data)) }
+        @data.each { |data|
+          output.store(Mustache.render(@out_raw, data), Mustache.render(@template, data))
+        }
         return output
       elsif @data.is_a?(Hash)
       return { Mustache.render(@out_raw, data) => Mustache.render(@template, @data) }
