@@ -7,6 +7,8 @@ Right now it uses mustache for it's template files and JSON for it's config and 
 If you find bugs or bad error messages be sure to log an issue.
 
 
+[![Gem Version](https://badge.fury.io/rb/codgen.svg)](http://badge.fury.io/rb/codgen)
+
 ## Installation
 
     $ gem install codgen
