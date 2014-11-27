@@ -5,18 +5,6 @@ A cross language template base code generator, capable of generating multiple ap
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'codgen'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install codgen
 
 ## Usage
