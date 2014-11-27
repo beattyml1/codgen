@@ -1,0 +1,8 @@
+class {{EntityName}} < ActiveRecord::Base
+  {{#hasmany}}
+  has_many {{entity_names}}
+  {{/hasmany}}
+  {{#belongsto}}
+  belongs_to {{entity_names}}
+  {{/belongsto}}
+end
