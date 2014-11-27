@@ -3,6 +3,7 @@ require_relative 'codgen/auto_style'
 require_relative 'codgen/mapping'
 require_relative 'codgen/logger'
 require_relative 'codgen/template'
+require_relative 'codgen/package'
 
 module Codgen
   def self.run(json_config)
@@ -18,8 +19,16 @@ module Codgen
     filled_templates = Array.new
 
     templates = json_config['templates']
-    templates.each do |template_info|
+    packages = json_config['packages']
 
+    if packages != nil
+      packages.each do |packageInfo|
+        package = Package.new(packageInfo)
+        templates.concat(package.templates)
+      end
+    end
+
+    templates.each do |template_info|
       template = Template.new(template_info, json_data)
       template.fill_template.each {|filled_template| filled_templates.push(filled_template)}
     end

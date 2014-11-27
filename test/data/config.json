@@ -21,5 +21,10 @@
             "out": "Output/Create{{ApplicationName}}Database.sql"
         }
     ],
+
+    "packages": [
+        "Input/package_test_dir",
+        "Input/package_test_zip.zip"
+    ],
     "data": "Input/example-data.json"
 }

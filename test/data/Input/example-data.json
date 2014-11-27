@@ -71,5 +71,6 @@
             "b": false,
             "c": false
         }
-    ]
+    ],
+    "name" : "World"
 }
