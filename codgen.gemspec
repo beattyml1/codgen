@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["beattyml1@gmail.com"]
   spec.summary       = 'Generate multiple applications from a common model written in JSON using template'
   spec.description   = ''
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/beattyml1/codgen"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
