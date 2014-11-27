@@ -1,6 +1,6 @@
 # Codgen
 
-A cross language template base code generator, capable of generating multiple applications from a common model.
+A cross language, template based, code generator, capable of generating multiple applications from a common model.
 
 Right now it uses mustache for it's template files and JSON for it's config and model. We're working on making it so that you can use whatever template engine you want though like mustache or erb.
 
@@ -14,6 +14,8 @@ If you find bugs or bad error messages be sure to log an issue.
 ## Usage
 
     $ codgen.rb codgen_config.json
+    
+For more info see the wiki page
 
 ## Contributing
 
