@@ -24,6 +24,11 @@
             "in": "Input/explicit_names.txt",
             "out": "Output/explicit_names.txt",
             "template engine": "mustache"
+        },
+        {
+            "in": "Input/static_text.txt",
+            "out": "Output/static_text.txt",
+            "template engine": "static"
         }
     ],
 
