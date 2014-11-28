@@ -72,5 +72,5 @@
             "c": false
         }
     ],
-    "name" : "World"
+    "@name" : "World"
 }

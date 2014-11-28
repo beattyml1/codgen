@@ -23,10 +23,10 @@ module Codgen
       end
 
       add_props.each do |key, value|
-        add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '!camelCase')
-        add_property_group(json_object, key, value, AutoStyle.method(:to_cap_camel), '!CapCamel')
-        add_property_group(json_object, key, value, AutoStyle.method(:to_underscore), '!underscored')
-        add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '!CAPS_UNDERSCORE')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '?camelCase')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_cap_camel), '?CapCamel')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_underscore), '?underscored')
+        add_property_group(json_object, key, value, AutoStyle.method(:to_camel), '?CAPS_UNDERSCORE')
       end
     end
 
@@ -39,32 +39,28 @@ module Codgen
     private
     def self.add_property_group(json_object, key, value, translate, explicit_postfix)
       should_translate_val = value != nil && value.is_a?(String) && key.index('@')
-      is_plural = key.index('?plural')
+      is_plural = key.index('#plural')
 
-      new_key = translate.call(key)
+      new_key = translate.call(key.gsub('#plural', ''))
       new_value = should_translate_val ? translate.call(value) : value
-      explicit_key = new_key + explicit_postfix
 
-      requantified = pluralize_singularize(new_key, explicit_key, new_value, is_plural, should_translate_val)
+      requantified_key = pluralize_singularize(new_key, is_plural)
+      requantified_val = should_translate_val ? pluralize_singularize(new_value, is_plural) : new_value
+
+      requantified_suffix = is_plural ? '?singular' : '?plural'
+      original_quantity_suffix = is_plural ? '?plural' : '?singular'
 
       try_add_prop(json_object, new_key, new_value)
-      try_add_prop(json_object, explicit_key, new_value)
-      try_add_prop(json_object, requantified.short_key, requantified.value)
-      try_add_prop(json_object, requantified.explicit_key, requantified.value)
+      try_add_prop(json_object, new_key+explicit_postfix, new_value)
+      try_add_prop(json_object, new_key+explicit_postfix+original_quantity_suffix, new_value)
+
+      try_add_prop(json_object, requantified_key, requantified_val)
+      try_add_prop(json_object, requantified_key+explicit_postfix, requantified_val)
+      try_add_prop(json_object, requantified_key+explicit_postfix+requantified_suffix, requantified_val)
     end
 
-    def self.pluralize_singularize(short_key, explicit_key, value, is_plural, should_translate_value)
-      return_obj = OpenStruct.new
-      if is_plural
-        return_obj.short_key = short_key.singularize
-        return_obj.explicit_key = explicit_key.singularize
-        return_obj.value = should_translate_value ? value.singularize : value
-      else
-        return_obj.short_key = short_key.pluralize
-        return_obj.explicit_key = explicit_key.pluralize
-        return_obj.value = should_translate_value ? value.pluralize : value
-      end
-      return_obj
+    def self.pluralize_singularize(val, is_plural)
+      is_plural ? val.singularize : val.pluralize
     end
 
 
