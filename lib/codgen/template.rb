@@ -16,7 +16,7 @@ module Codgen
       @template = Template.get_template(@input_path)
       @template_provider = Codgen.template_provider.named(template_info['template engine'])
       if @template_provider == nil
-        @template_provider = Codgen.template_provider.for_extension(File.extname(@out_raw))
+        @template_provider = Codgen.template_provider.for_extension(File.extname(@input_path))
       end
       if @template_provider == nil
         @template_provider = Codgen.template_provider.named('static')

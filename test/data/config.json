@@ -4,8 +4,7 @@
         {
             "in": "Input/model_template.rb.mustache",
             "source": "entities",
-            "out": "Output/Ruby/{{application_name}}/Models/{{entity_name}}.rb",
-            "template engine": "mustache"
+            "out": "Output/Ruby/{{application_name}}/Models/{{entity_name}}.rb"
         },
         {
             "in": "Input/ModelTemplate.cs.mustache",
@@ -23,7 +22,8 @@
         },
         {
             "in": "Input/explicit_names.txt",
-            "out": "Output/explicit_names.txt"
+            "out": "Output/explicit_names.txt",
+            "template engine": "mustache"
         }
     ],
 
