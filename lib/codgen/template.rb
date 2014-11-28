@@ -1,6 +1,7 @@
 require 'mustache'
 require_relative 'flattener'
 require_relative 'logger'
+require_relative 'template_provider'
 
 module Codgen
   class Template
@@ -13,17 +14,24 @@ module Codgen
       source_location = source_raw != nil ? source_raw.split('.') : []
       @data = Flattener.merge(data_root, source_location)
       @template = Template.get_template(@input_path)
+      @template_provider = Codgen.template_provider.named(template_info['template engine'])
+      if @template_provider == nil
+        @template_provider = Codgen.template_provider.for_extension(File.extname(@out_raw))
+      end
+      if @template_provider == nil
+        @template_provider = Codgen.template_provider.named('static')
+      end
     end
 
     def fill_template
       if @data.is_a?(Array)
         output = Hash.new
         @data.each { |data|
-          output.store(Mustache.render(@out_raw, data), Mustache.render(@template, data))
+          output.store(Mustache.render(@out_raw, data), @template_provider.render(@template, data))
         }
         return output
       elsif @data.is_a?(Hash)
-      return { Mustache.render(@out_raw, data) => Mustache.render(@template, @data) }
+      return { Mustache.render(@out_raw, data) => @template_provider.render(@template, data) }
       end
     end
 

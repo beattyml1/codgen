@@ -32,4 +32,5 @@ If you find bugs or bad error messages be sure to log an issue on GitHub."
   spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency 'rubyzip'
+  spec.add_runtime_dependency 'handlebars'
 end

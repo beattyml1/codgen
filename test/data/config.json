@@ -2,26 +2,27 @@
     "map": "Map.json",
     "templates": [
         {
-            "in": "Input/model_template.rb.ctemp",
+            "in": "Input/model_template.rb.mustache",
             "source": "entities",
-            "out": "Output/Ruby/{{application_name}}/Models/{{entity_name}}.rb"
+            "out": "Output/Ruby/{{application_name}}/Models/{{entity_name}}.rb",
+            "template engine": "mustache"
         },
         {
-            "in": "Input/ModelTemplate.cs",
+            "in": "Input/ModelTemplate.cs.mustache",
             "source": "entities",
             "out": "Output/MsMvc/{{ApplicationName}}/Models/{{EntityName}}.cs"
         },
         {
-            "in": "Input/DbContextTemplate.cs",
+            "in": "Input/DbContextTemplate.cs.mustache",
             "source": "entities",
             "out": "Output/MsMvc/{{ApplicationName}}/DAL/{{ApplicationName}}Context.cs"
         },
         {
-            "in": "Input/CreateDatabase.sql",
+            "in": "Input/CreateDatabase.sql.mustache",
             "out": "Output/Create{{ApplicationName}}Database.sql"
         },
         {
-            "in": "Input/explicit_names.txt.mustache",
+            "in": "Input/explicit_names.txt",
             "out": "Output/explicit_names.txt"
         }
     ],
