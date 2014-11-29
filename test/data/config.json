@@ -29,6 +29,10 @@
             "in": "Input/static_text.txt",
             "out": "Output/static_text.txt",
             "template engine": "static"
+        },
+        {
+            "in": "Input/i_can_ride_my_bike_with_no.handlebars",
+            "out": "Output/i_can_ride_my_bike_with_no"
         }
     ],
 
