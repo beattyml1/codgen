@@ -1,10 +1,10 @@
 # Codgen
 
-A cross language, template based, code generator, capable of generating multiple applications from a common model.
+Codgen is a cross language, template based, code generator, capable of generating multiple applications from a common model.
 
-Right now it uses mustache for it's template files and JSON for it's config and model. We're working on making it so that you can use whatever template engine you want though like mustache or erb.
+It uses JSON for it's model and config and you can use mustache or handlebars templates or just verbatim copy. 
 
-If you find bugs or bad error messages be sure to log an issue.
+If you find bugs or bad error messages be sure to log an issue. If it's not to big I'll probably get to pretty quickly. Pull requests are also most welcome!
 
 
 [![Gem Version](https://badge.fury.io/rb/codgen.svg)](http://badge.fury.io/rb/codgen)
