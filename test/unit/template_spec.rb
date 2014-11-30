@@ -2,7 +2,7 @@ require 'rspec'
 require_relative '../../lib/codgen/template'
 
 describe 'template' do
-  config = {'source' => 'data', 'in' => 'Input/hello_world.txt.mustache', 'out' => 'Output/hello_world.txt' }
+  config = {'source' => 'data', 'in' => 'hello_world.txt.mustache', 'out' => 'hello_world.txt' }
   data_root = { 'data' => [{'name' => 'World'}], 'foo' => 'blah' }
   template_text = 'Hello {{name}}'
   template = Codgen::Template.new(config, data_root)
@@ -20,11 +20,11 @@ describe 'template' do
     it 'should return a hash' do
       expect(template.fill_template.is_a?(Hash)).to eq(true)
     end
-    it 'should return a output file with location "Output/hello_world.txt"' do
-      expect(template.fill_template.keys[0]).to eq('Output/hello_world.txt')
+    it 'should return a output file with location "hello_world.txt"' do
+      expect(template.fill_template.keys[0]).to eq('hello_world.txt')
     end
-    it 'should return a output file with location "Output/hello_world.txt"' do
-      expect(template.fill_template['Output/hello_world.txt']).to eq('Hello World')
+    it 'should return a output file with location "hello_world.txt"' do
+      expect(template.fill_template['hello_world.txt']).to eq('Hello World')
     end
   end
 end

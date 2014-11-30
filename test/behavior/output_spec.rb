@@ -3,13 +3,13 @@ require 'fileutils'
 require_relative 'test_utils'
 
 describe 'Application' do
-  $expectation_directory = 'expected_output'
-  $output_directory = 'Output'
+  $expectation_directory = 'test/data/expected_output'
+  $output_directory = 'test/data/Output'
   before :all do
 
     FileUtils.rm_rf($output_directory)
 
-    puts `../../bin/codgen.rb config.json`
+    puts `bin/codgen.rb test/data/Input test/data/Output`
   end
 
   it 'should produce all expected files' do

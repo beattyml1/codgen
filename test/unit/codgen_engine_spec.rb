@@ -3,7 +3,7 @@ require_relative '../../lib/codgen'
 
 describe 'codgen' do
   config = {
-    'templates' => [{'source' => 'data', 'in' => 'Input/hello_world.txt.mustache', 'out' => 'Output/hello_world.txt' }],
+    'templates' => [{'source' => 'data', 'in' => 'hello_world.txt.mustache', 'out' => 'hello_world.txt' }],
     'data' => { 'data' => [{'name' => 'World'}], 'foo' => 'blah' }
   }
   it 'should have one result' do

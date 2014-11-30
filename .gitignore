@@ -13,4 +13,7 @@
 *.a
 mkmf.log
 *.gem
-test/data/Output
+test/data/Output/
+test/data/Input/package_test_zip/
+__MACOSX/
+.idea/dictionaries/

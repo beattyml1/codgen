@@ -25,7 +25,7 @@ module Codgen
         @unpacked_path = File.basename(@input_path, '.zip')
         unzip_file(@input_path)
       else
-        Logger.error 'Invalid package file format: should be a zip or a directory'
+        Logger.error "Invalid package #{@input_path}: should be a zip or a directory"
       end
 
       config_path = "#{@unpacked_path}/config.json"
