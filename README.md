@@ -15,7 +15,12 @@ If you find bugs or bad error messages be sure to log an issue. If it's not to b
 
 ## Usage
 
+    $ codgen.rb [input_directory_path|config_path.json] [output_directory_path]
+
+Examples
+
     $ codgen.rb codgen_config.json
+    $ codgen.rb input_dir output_dir
     
 For more info see the wiki page
 
