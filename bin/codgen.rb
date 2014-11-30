@@ -14,7 +14,8 @@ class CommandLineArguments
 
     if arguments.count >= 1
       if arguments[0] == '--help'
-        puts ''
+        puts 'Help will be here  later'
+        exit 0
       elsif File.directory?(arguments[0])
         @input_directory = arguments[0]
         @json_config = 'config.json'
