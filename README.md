@@ -7,7 +7,7 @@ It uses JSON for it's model and config and you can use mustache or handlebars te
 If you find bugs or bad error messages be sure to log an issue. If it's not to big I'll probably get to pretty quickly. Pull requests are also most welcome!
 
 
-[![Gem Version](https://badge.fury.io/rb/codgen.svg)](http://badge.fury.io/rb/codgen) [![Build Status](https://travis-ci.org/beattyml1/codgen.svg)](https://travis-ci.org/beattyml1/codgen)
+[![Gem Version](https://badge.fury.io/rb/codgen.svg)](http://badge.fury.io/rb/codgen) [![Build Status](https://travis-ci.org/beattyml1/codgen.svg)](https://travis-ci.org/beattyml1/codgen) [![Code Climate](https://codeclimate.com/github/beattyml1/codgen/badges/gpa.svg)](https://codeclimate.com/github/beattyml1/codgen)
 
 ## Installation
 
