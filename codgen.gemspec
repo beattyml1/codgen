@@ -9,11 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Matthew Beatty"]
   spec.email         = ["beattyml1@gmail.com"]
   spec.summary       = 'Generate multiple applications from a common model written in JSON using template'
-  spec.description   = "A cross language, template based, code generator, capable of generating multiple applications from a common model.
-
-Right now it uses mustache for it's template files and JSON for it's config and model. We're working on making it so that you can use whatever template engine you want though like mustache or erb.
-
-If you find bugs or bad error messages be sure to log an issue on GitHub."
+  spec.description   = "Codgen is a cross language, template based, code generator, capable of generating multiple applications from a common model. It uses JSON for it's model and config and you can use mustache or handlebars templates or just verbatim copy. If you find a bug or bad error message be sure to log an issue on GitHub."
 
   spec.homepage      = "https://github.com/beattyml1/codgen"
   spec.license       = "MIT"
