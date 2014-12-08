@@ -99,6 +99,14 @@ module Codgen
     end
 
     def expand_and
+      expand_two_sided(:and, /and|&/)
+    end
+
+    def expand_or
+      expand_two_sided(:or, /or|\|/)
+    end
+
+    def expand_two_sided(operator, regex)
       new_words = Array.new
       index = -1
       skip = false
@@ -110,13 +118,9 @@ module Codgen
         end
         if word.is_a?(Statement)
           new_words.push(word)
-        elsif word.index(/and|&/)
+        elsif word.index(regex)
           if new_words.count > 0 && @words.count > index + 1
-            left = new_words[-1]
-            new_words.delete_at(-1)
-            new_words.push(Statement.new(:and))
-            new_words[-1].words.push(left)
-            new_words[-1].words.push(@words[index+1])
+            replace_with_statement(new_words, operator)
             skip = true
             next
           else
@@ -129,35 +133,12 @@ module Codgen
       @words = new_words
     end
 
-    def expand_or
-      new_words = Array.new
-      index = -1
-      skip = false
-      @words.each do |word|
-        index+=1
-        if skip
-          skip = false
-          next
-        end
-        if word.is_a?(Statement)
-          new_words.push(word)
-        elsif word.index(/or|\|/)
-          if new_words.count > 0 && @words.count > index + 1
-            left = new_words[-1]
-            new_words.delete_at(-1)
-            new_words.push(Statement.new(:or))
-            new_words[-1].words.push(left)
-            new_words[-1].words.push(@words[index+1])
-            skip = true
-            next
-          else
-            throw 'Operator must have a left and a right side'
-          end
-        else
-          new_words.push(word)
-        end
-      end
-      @words = new_words
+    def replace_with_statement(new_words, operator)
+      left = new_words[-1]
+      new_words.delete_at(-1)
+      new_words.push(Statement.new(operator))
+      new_words[-1].words.push(left)
+      new_words[-1].words.push(@words[index+1])
     end
   end
 end
