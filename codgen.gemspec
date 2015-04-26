@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency 'rubyzip'
-  spec.add_runtime_dependency 'handlebars', '~> 0.6'
+  spec.add_runtime_dependency 'handlebars', '0.6.0'
 end
