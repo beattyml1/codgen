@@ -1,0 +1,44 @@
+{
+    "map": "Map.json",
+    "templates": [
+        {
+            "in": "model_template.rb.mustache",
+            "source": "entities",
+            "out": "Ruby/{{application_name}}/Models/{{entity_name}}.rb"
+        },
+        {
+            "in": "ModelTemplate.cs.mustache",
+            "source": "entities",
+            "out": "MsMvc/{{ApplicationName}}/Models/{{EntityName}}.cs"
+        },
+        {
+            "in": "DbContextTemplate.cs.mustache",
+            "source": "entities",
+            "out": "MsMvc/{{ApplicationName}}/DAL/{{ApplicationName}}Context.cs"
+        },
+        {
+            "in": "CreateDatabase.sql.mustache",
+            "out": "Create{{ApplicationName}}Database.sql"
+        },
+        {
+            "in": "explicit_names.txt",
+            "out": "explicit_names.txt",
+            "template engine": "mustache"
+        },
+        {
+            "in": "static_text.txt",
+            "out": "static_text.txt",
+            "template engine": "static"
+        },
+        {
+            "in": "i_can_ride_my_bike_with_no.handlebars",
+            "out": "i_can_ride_my_bike_with_no"
+        }
+    ],
+
+    "packages": [
+        "package_test_dir",
+        "package_test_zip.zip"
+    ],
+    "data": "https://raw.githubusercontent.com/beattyml1/codgen/master/test/data/Input/example-data.json"
+}

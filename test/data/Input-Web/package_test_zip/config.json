@@ -1,0 +1,8 @@
+{
+  "templates": [
+    {
+      "in": "package_zip_hello_world.txt.mustache",
+      "out": "package_zip_hello_world.txt"
+    }
+  ]
+}
