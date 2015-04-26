@@ -29,7 +29,7 @@ describe 'Application' do
       output_file_path = expected_file_path.sub($expectation_directory, $output_directory)
       it "should produce file: '#{output_file_path}' that is the same as '#{expected_file_path}'" do
         expect(File.exist?(output_file_path)).to be_truthy
-        expect(FileUtils.cmp(output_file_path, expected_file_path)).to be_truthy
+        expect(File.read(output_file_path)).to eq File.read(expected_file_path)
       end
     end
   end
