@@ -19,10 +19,3 @@
 {{applicationNames?camelCase}}
 {{applicationName?camelCase?singular}}
 {{applicationNames?camelCase?plural}}
-
-{{#each entities}}
-    {{EntityName}}
-    {{entity_name}}
-    {{entityName}}
-    {{ENTITY_NAME}}
-{{/each}}

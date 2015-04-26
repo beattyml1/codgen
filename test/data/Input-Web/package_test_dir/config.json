@@ -1,0 +1,8 @@
+{
+  "templates": [
+    {
+      "in": "package_hello_world.txt.mustache",
+      "out": "package_hello_world.txt"
+    }
+  ]
+}

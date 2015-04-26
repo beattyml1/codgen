@@ -19,14 +19,3 @@ myBlog
 myBlogs
 myBlog
 myBlogs
-
-
-    Post
-    post
-    post
-    
-
-    Comment
-    comment
-    comment
-    

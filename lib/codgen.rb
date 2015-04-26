@@ -4,6 +4,7 @@ require_relative 'codgen/mapping'
 require_relative 'codgen/logger'
 require_relative 'codgen/template'
 require_relative 'codgen/package'
+require 'net/http'
 
 module Codgen
   def self.run(json_config)
@@ -39,7 +40,12 @@ module Codgen
   def self.get_data_if_not_data(filepath_or_data)
     if filepath_or_data != nil
       if filepath_or_data.is_a?(String)
-        file = File.read(filepath_or_data)
+        if /https?:\/\//.match(filepath_or_data)
+          resp = Net::HTTP.get_response(URI.parse(filepath_or_data))
+          file = resp.body
+        else
+          file = File.read(filepath_or_data)
+        end
         JSON.parse(file)
       elsif filepath_or_data.is_a?(Hash)
         filepath_or_data
